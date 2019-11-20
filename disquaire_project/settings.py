@@ -32,7 +32,7 @@ else:
     DEBUG = True
 
 
-ALLOWED_HOSTS = ['disquaire.herokuapp.com']
+ALLOWED_HOSTS = ['127.0.0.1', '127.0.0.1:8000', 'localhost']
 
 
 # Application definition
@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -57,8 +56,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+
 ]
 
 ROOT_URLCONF = 'disquaire_project.urls'
@@ -87,11 +85,11 @@ WSGI_APPLICATION = 'disquaire_project.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql', # on utilise l'adaptateur postgresql
-        'NAME': 'disquaire', # le nom de notre base de données créée précédemment
-        'USER': 'celinems', # attention : remplacez par votre nom d'utilisateur !!
-        'PASSWORD': '',
-        'HOST': '',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2', # on utilise l'adaptateur postgresql
+        'NAME': 'disquaire2', # le nom de notre base de données créée précédemment
+        'USER': 'mathieu92250', # attention : remplacez par votre nom d'utilisateur !!
+        'PASSWORD': 'borisfdp92',
+        'HOST': 'localhost',
         'PORT': '5432',
     }
 }
@@ -136,14 +134,18 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# Django debug toolbar
-INTERNAL_IPS = ['127.0.0.1']
-
 
 if os.environ.get('ENV') == 'PRODUCTION':
+    
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-    STATIC_ROOT = os.path.join(BASE_ROOT, 'staticfiles')
+    STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+    
+    STATICFILES_DIR = (
+            os.path.join(PROJECT_ROOT, 'static'),
+    )
 
-    # Simplified static file serving.
-    # https://warehouse.python.org/project/whitenoise/
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    
+
+
+
