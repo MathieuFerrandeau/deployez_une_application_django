@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db import transaction, IntegrityError
@@ -7,7 +9,9 @@ from .forms import ContactForm
 from .forms import ContactForm, ParagraphErrorList
 
 
-def index(request):
+logger = logging.getLogger(__name__)
+
+def index(request):    
     albums = Album.objects.filter(available=True).order_by('-created_at')[:12]
     context = {
         'albums': albums
@@ -93,4 +97,7 @@ def search(request):
         'albums': albums,
         'title': title
     }
+    logger.info('New search', exc_info=True, extra={
+        'request': request,
+    })
     return render(request, 'store/search.html', context)
